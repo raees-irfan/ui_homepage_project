@@ -1,6 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:google_fonts/google_fonts.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: Color(0xFFF8F9FB),
+        scaffoldBackgroundColor: Color(0xFFF8F9FB),
+      ),
+      home: MainScreen(),
+    );
+  }
+}
+
 class MainScreen extends StatefulWidget {
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -50,25 +68,6 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Show a quick add activity dialog
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return Dialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: QuickAddActivityDialog(),
-              );
-            },
-          );
-        },
-        backgroundColor: Colors.blue,
-        child: Icon(Icons.add, color: Colors.white),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
@@ -90,6 +89,7 @@ Widget buildHeader(BuildContext context) {
           icon: Icon(Icons.info_outline, color: Colors.black),
           onPressed: () {
             // Show the fitness tracking info dialog instead of a SnackBar
+
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -448,111 +448,6 @@ class WeeklyTargetInfoDialog extends StatelessWidget {
   }
 }
 
-// Quick Add Activity Dialog
-class QuickAddActivityDialog extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(24.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Add activity",
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 24),
-
-          // Activity options
-          _buildActivityOption(context, Icons.directions_run, "Running", Color(0xFF07BE9A)),
-          _buildActivityOption(context, Icons.directions_bike, "Cycling", Color(0xFF184EA5)),
-          _buildActivityOption(context, Icons.fitness_center, "Workout", Colors.orange),
-          _buildActivityOption(context, Icons.pool, "Swimming", Colors.blue),
-
-          SizedBox(height: 16),
-
-          // More option
-          InkWell(
-            onTap: () {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("More activities option clicked")),
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Row(
-                children: [
-                  Icon(Icons.more_horiz, color: Colors.grey[600]),
-                  SizedBox(width: 16),
-                  Text(
-                    "More...",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          SizedBox(height: 16),
-
-          // Cancel button
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text(
-                "CANCEL",
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildActivityOption(BuildContext context, IconData icon, String label, Color color) {
-    return InkWell(
-      onTap: () {
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("$label activity selected")),
-        );
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12.0),
-        child: Row(
-          children: [
-            Icon(icon, color: color, size: 28),
-            SizedBox(width: 16),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 // Home screen with scrollable content including header
 class HomeScreenWithHeader extends StatelessWidget {
   @override
@@ -840,212 +735,212 @@ class EventBox extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
           if (date != null) ...[
-            Text(
-              date!,
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black87),
-            ),
-            SizedBox(height: 6),
-          ],
-          GestureDetector(
-            onTap: () {
-              if (title == "Your weekly target") {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return Dialog(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: WeeklyTargetInfoDialog(),
-                    );
-                  },
-                );
-              }
-            },
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey.shade300),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade200,
-                    blurRadius: 6,
-                    spreadRadius: 2,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              padding: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                              title,
-                              style: TextStyle(
-                                  fontSize: title == "Energy expended" ? 18 : (showBarChart ? 28 : 18),
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black
-                              )
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                              subtitle,
-                              style: TextStyle(
-                                  fontSize: showBarChart ? 18 : 14,
-                                  color: Colors.grey.shade700
-                              )
-                          ),
-                        ],
-                      ),
-                      if (title == "Your weekly target" || showBarChart)
-                        GestureDetector(
-                          onTap: () {
-                            if (title == "Your weekly target") {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Dialog(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                    child: WeeklyTargetInfoDialog(),
-                                  );
-                                },
-                              );
-                            }
-                          },
-                          child: Icon(
-                            Icons.chevron_right,
-                            color: Colors.grey[500],
-                            size: 24,
-                          ),
-                        ),
-                    ],
-                  ),
+      Text(
+      date!,
+      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black87),
+    ),
+    SizedBox(height: 6),
+    ],
+    GestureDetector(
+    onTap: () {
+    if (title == "Your weekly target") {
+    showDialog(
+    context: context,
+    builder: (BuildContext context) {
+    return Dialog(
+    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(20.0),
+    ),
+    child: WeeklyTargetInfoDialog(),
+    );
+    },
+    );
+    }
+    },
+    child: Container(
+    width: double.infinity,
+    decoration: BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(16),
+    border: Border.all(color: Colors.grey.shade300),
+    boxShadow: [
+    BoxShadow(
+    color: Colors.grey.shade200,
+    blurRadius: 6,
+    spreadRadius: 2,
+    offset: Offset(0, 2),
+    ),
+    ],
+    ),
+    padding: EdgeInsets.all(16),
+    child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+    Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+    Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+    Text(
+    title,
+    style: TextStyle(
+    fontSize: title == "Energy expended" ? 18 : (showBarChart ? 28 : 18),
+    fontWeight: FontWeight.bold,
+    color: Colors.black
+    )
+    ),
+    SizedBox(height: 4),
+    Text(
+    subtitle,
+    style: TextStyle(
+    fontSize: showBarChart ? 18 : 14,
+    color: Colors.grey.shade700
+    )
+    ),
+    ],
+    ),
+    if (title == "Your weekly target" || showBarChart)
+    GestureDetector(
+    onTap: () {
+    if (title == "Your weekly target") {
+    showDialog(
+    context: context,
+    builder: (BuildContext context) {
+    return Dialog(
+    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(20.0),
+    ),
+    child: WeeklyTargetInfoDialog(),
+    );
+    },
+    );
+    }
+    },
+    child: Icon(
+    Icons.chevron_right,
+    color: Colors.grey[500],
+    size: 24,
+    ),
+    ),
+    ],
+    ),
 
-                  if (showBarChart && barChartData != null && barChartData!.length > 0) ...[
-                    SizedBox(height: 32),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        // Left side with calorie count
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              value.split(' ')[0], // Extract the number part
-                              style: TextStyle(
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF1976D2),
-                              ),
-                            ),
-                            Text(
-                              value.split(' ')[1], // Extract the unit part (Cal)
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Color(0xFF1976D2),
-                              ),
-                            ),
-                            SizedBox(height: 8),
-                            Text(
-                              description, // "Today"
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Color(0xFF1976D2),
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(width: 24),
-                        // Right side with bar chart
-                        Expanded(
-                          child: _buildBarChart(barChartData!),
-                        ),
-                      ],
-                    ),
-                  ] else if (showProgressBar && title == "Your weekly target") ...[
-                    // Weekly target-specific layout
-                    SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Text(
-                          currentValue.toString(),
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF07BE9A),
-                          ),
-                        ),
-                        Text(
-                          " of $maxValue",
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.grey[700],
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 12),
-                    // Enhanced progress bar with indicator dot
-                    Stack(
-                      children: [
-                        // Background of progress bar
-                        Container(
-                          height: 8,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Color(0xFF07BE9A).withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                        ),
+    if (showBarChart && barChartData != null && barChartData!.length > 0) ...[
+    SizedBox(height: 32),
+    Row(
+    crossAxisAlignment: CrossAxisAlignment.end,
+    children: [
+    // Left side with calorie count
+    Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+    Text(
+    value.split(' ')[0], // Extract the number part
+    style: TextStyle(
+    fontSize: 32,
+    fontWeight: FontWeight.bold,
+    color: Color(0xFF1976D2),
+    ),
+    ),
+    Text(
+    value.split(' ')[1], // Extract the unit part (Cal)
+    style: TextStyle(
+    fontSize: 20,
+    color: Color(0xFF1976D2),
+    ),
+    ),
+    SizedBox(height: 8),
+    Text(
+    description, // "Today"
+    style: TextStyle(
+    fontSize: 20,
+    color: Color(0xFF1976D2),
+    fontWeight: FontWeight.w500,
+    ),
+    ),
+    ],
+    ),
+    SizedBox(width: 24),
+    // Right side with bar chart
+    Expanded(
+    child: _buildBarChart(barChartData!),
+    ),
+    ],
+    ),
+    ] else if (showProgressBar && title == "Your weekly target") ...[
+    // Weekly target-specific layout
+    SizedBox(height: 16),
+    Row(
+    children: [
+    Text(
+    currentValue.toString(),
+    style: TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+    color: Color(0xFF07BE9A),
+    ),
+    ),
+    Text(
+    " of $maxValue",
+    style: TextStyle(
+    fontSize: 18,
+    color: Colors.grey[700],
+    ),
+    ),
+    ],
+    ),
+    SizedBox(height: 12),
+    // Enhanced progress bar with indicator dot
+    Stack(
+    children: [
+    // Background of progress bar
+    Container(
+    height: 8,
+    width: double.infinity,
+    decoration: BoxDecoration(
+    color: Color(0xFF07BE9A).withOpacity(0.1),
+    borderRadius: BorderRadius.circular(4),
+    ),
+    ),
 
-                        // Actual progress
-                        LayoutBuilder(
-                            builder: (context, constraints) {
-                              return Container(
-                                height: 8,
-                                width: constraints.maxWidth * progressRatio,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFF07BE9A),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              );
-                            }
-                        ),
+    // Actual progress
+    LayoutBuilder(
+    builder: (context, constraints) {
+    return Container(
+    height: 8,
+    width: constraints.maxWidth * progressRatio,
+    decoration: BoxDecoration(
+    color: Color(0xFF07BE9A),
+    borderRadius: BorderRadius.circular(4),
+    ),
+    );
+    }
+    ),
 
-                        // Indicator dot at progress position
-                        LayoutBuilder(
-                            builder: (context, constraints) {
-                              return Positioned(
-                                left: (constraints.maxWidth * progressRatio) - 4,
-                                top: 0,
-                                child: Container(
-                                  height: 8,
-                                  width: 8,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFF07BE9A),
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                              );
-                            }
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16),
+    // Indicator dot at progress position
+    LayoutBuilder(
+    builder: (context, constraints) {
+    return Positioned(
+    left: (constraints.maxWidth * progressRatio) - 4,
+    top: 0,
+    child: Container(
+    height: 8,
+    width: 8,
+    decoration: BoxDecoration(
+    color: Color(0xFF07BE9A),
+    shape: BoxShape.circle,
+    ),
+    ),
+    );
+    }
+    ),
+    ],
+    ),
+    SizedBox(height: 16),
     // Description with logo for the weekly target
     Row(
     crossAxisAlignment: CrossAxisAlignment.end,
